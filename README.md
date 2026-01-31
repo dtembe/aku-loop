@@ -311,28 +311,7 @@ Aku-Loop/
 │       ├── specs/           # Example specs (gitignored)
 │       └── src/             # Example src (gitignored)
 ├── artifacts/               # Images and other static assets
-├── _archive/                # Archived scripts (not tracked in git)
-│   ├── Aku Loop.sh
-│   ├── aku_loop.ps1
-│   ├── loop.ps1
-│   ├── loop.sh
-│   ├── loop_v1.ps1
-│   └── loop_v1.sh
-├── test-project/            # Example/test project (not tracked in git)
-│   ├── aku-loop-build.ps1
-│   ├── aku-loop-plan.ps1
-│   ├── aku-loop-specs.ps1
-│   ├── AGENTS.md
-│   ├── IMPLEMENTATION_PLAN.md
-│   ├── logs/
-│   ├── loop.ps1
-│   ├── PROMPT_build.md
-│   ├── PROMPT_plan.md
-│   ├── PROMPT_specs_interview.md
-│   ├── setup_git_repo.ps1
-│   ├── SPECS_INTERVIEW.md
-│   ├── specs/
-│   └── src/
+
 ```
 
 **Key points:**
@@ -486,7 +465,9 @@ Succinct learnings about how to RUN the project:
 The prompts reference "Sonnet" and "Opus" models in Claude Code. 
 I prefer to use z.ai and their GLM models or sometimes will switch to local models. These are shortcuts that can be remapped to any LLM family via Claude Code settings:
 
-```json Windows PowerShell
+Windows PowerShell
+
+          ```json 
           (base) PS C:\Users\$USER> more .claude\settings.json 
           {
             "env": {
@@ -497,7 +478,9 @@ I prefer to use z.ai and their GLM models or sometimes will switch to local mode
           }
           ```
 
-          ```bash Linux/macOS
+Linux/macOS
+
+          ```json 
           $ cat ~/.claude/settings.json 
           {
             "env": {
