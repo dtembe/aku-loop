@@ -80,7 +80,6 @@ Common options for all scripts:
 - [Key Principles](#key-principles)
 - [Loop Mechanics](#loop-mechanics)
 - [Configuration](#configuration)
-- [Enhancements](#enhancements)
 
 ---
 
@@ -495,7 +494,6 @@ Linux/macOS
 This allows using GPT, GLM, or other models while keeping the prompts unchanged.
 
 ---
-## Enhancements
 
 ---
 ![Aku mini](artifacts/Aku-mini.jpg)
@@ -515,5 +513,3 @@ This implementation builds on their work while adding cross-platform support, gi
 ## License
 
 This repository is a practical implementation of the Ralph Method. See original sources for licensing information. No claims or creativity is asserted by me or Aku!
-
-
