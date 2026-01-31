@@ -62,7 +62,7 @@ Now run the 3-stage process directly from your project root:
 # 3. BUILD Mode
 ./aku-loop-build.sh
 ```
-
+```
 Common options for all scripts:
 - `--model` / `-Model` (e.g., `sonnet`)
 - `--resume` / `-Resume`
@@ -158,7 +158,7 @@ Run `aku-loop-build` to execute the plan.
 - **Context:** `PROMPT_build.md` + `AGENTS.md` + `IMPLEMENTATION_PLAN.md`
 
 **Auto-completion detection:** The build script automatically stops when:
-- All tasks in `IMPLEMENTATION_PLAN.md` are marked complete (✅, `[x]`, `DONE`)
+- All tasks in `IMPLEMENTATION_PLAN.md` are marked complete (`[✓]`, `[x]`, `DONE`)
 - Claude reports "nothing to implement" or similar completion phrases
 
 This means you can run without `-MaxIterations` and trust it to stop when done.
@@ -343,54 +343,7 @@ Aku-Loop/
 
 ---
 
-## Key Principles
 
-###  Context Is _Everything_
-
-- When 200K+ tokens advertised = ~176K truly usable
-- 40-60% context utilization for "smart zone"
-- Tight tasks + 1 task per loop = _100% smart zone context utilization_
-
-This drives everything:
-- Use the main agent as a scheduler; spawn subagents for expensive work
-- Each subagent gets ~156kb that's garbage collected
-- Prefer Markdown over JSON for better token efficiency
-
-
-###  Steering Aku Loop: Patterns + Backpressure
-
-Create the right signals & gates to steer successful output:
-
-**Upstream** (deterministic setup):
-- Every loop loads the same files: `PROMPT.md` + `AGENTS.md`
-- Your existing code shapes what gets used and generated
-- Add utilities/patterns to steer toward correct implementations
-
-**Downstream** (backpressure):
-- Tests, typechecks, lints, builds reject invalid/unacceptable work
-- `AGENTS.md` specifies actual commands (prompt says "run tests" generically)
-
-
-###  Let Aku Loop Ralph
-
-
-Aku Loop's effectiveness comes from trusting it to do the right thing (eventually):
-
-- Lean into LLM's ability to self-identify, self-correct and self-improve
-- Eventual consistency achieved through iteration
-- The plan is disposable—regenerate when wrong/stale
-
-
-###  Move Outside the Loop
-
-To get the most out of Aku Loop, you need to get out of its way:
-
-- Aku Loop should do _all_ the work, including deciding what to implement next
-- Your job: engineer the setup and environment for success
-- Observe and course correct—tune like a guitar
-- Add "signs" based on observed failures
-
----
 
 ## Loop Mechanics
 
@@ -485,7 +438,7 @@ This allows experimentation and learning without requiring git initialization.
 
 ### AGENTS.md
 
-The single, canonical "heart of the loop"—a concise operational guide (~60 lines max):
+The single, canonical "heart of the loop"—a concise operational guide (~50 lines max):
 
 ```markdown
 ## Build & Run
@@ -530,7 +483,8 @@ Succinct learnings about how to RUN the project:
 
 ### Model Remapping:
 
-The prompts reference "Sonnet" and "Opus" models in Claude Code. I prefer to use z.ai and their GLM models or sometimes will switch to local models. These are shortcuts that can be remapped to any LLM family via Claude Code settings:
+The prompts reference "Sonnet" and "Opus" models in Claude Code. 
+I prefer to use z.ai and their GLM models or sometimes will switch to local models. These are shortcuts that can be remapped to any LLM family via Claude Code settings:
 
 ```json Windows PowerShell
           (base) PS C:\Users\$USER> more .claude\settings.json 
