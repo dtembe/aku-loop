@@ -134,20 +134,22 @@ echo "2. Save the file"
 echo "3. Press ENTER in this terminal to send reply"
 echo "Type 'exit' to quit."
 echo ""
-
 while true; do
     # 1. Wait for User Input
     echo -e "${GRAY}Waiting for you to update $INTERVIEW_FILE... (Press ENTER to send, 'exit' to quit)${NC}"
-    read -p "> " user_input
-    
-    if [[ "$user_input" == "exit" ]] || [[ "$user_input" == "quit" ]]; then break; fi
-    
+    printf "> "
+    IFS= read -r user_input
+
+    if [[ "$user_input" == "exit" ]] || [[ "$user_input" == "quit" ]]; then
+        break
+    fi
+
     # 2. Read Transcript
     if [ ! -f "$INTERVIEW_FILE" ]; then
         echo -e "${RED}Error: $INTERVIEW_FILE not found!${NC}"
         continue
     fi
-    
+
     if [ ! -f "$PROMPT_FILE" ]; then
         echo -e "${RED}Error: $PROMPT_FILE not found!${NC}"
         exit 1
@@ -189,7 +191,7 @@ while true; do
         
         if [[ "$COUNT" -gt 0 ]]; then
             echo ""
-            echo -e "${GREEN}✅ Successfully generated $COUNT spec files in /$SPECS_DIR.${NC}"
+            echo -e "${GREEN} check Successfully generated $COUNT spec files in /$SPECS_DIR.${NC}"
             echo -e "${GREEN}You can now run './aku-loop-plan.sh' to verify and plan.${NC}"
             
             echo -e "\n\n## System\nSpecs generated. Session Complete." >> "$INTERVIEW_FILE"
