@@ -311,5 +311,3 @@ The README documents several optional enhancements:
 - **JTD → Story Map → SLC Release**: Product-focused planning with Simple/Lovable/Complete releases
 
 These are documented for reference but not required for core Aku Loop functionality.
-
-

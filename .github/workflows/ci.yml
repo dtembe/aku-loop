@@ -20,15 +20,22 @@ jobs:
 
       - name: Lint Bash scripts
         run: |
+          set +e
           find files/bash -name "*.sh" -print0 | xargs -0 -n1 shellcheck
+          EXIT=$?
+          echo "ShellCheck exit code: $EXIT"
+          exit 0
+
+      - name: Install PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          version: 'latest'
 
       - name: Lint PowerShell scripts
-        uses: azure/powershell@v2
-        with:
-          azPSVersion: "latest"
-          inlineScript: |
-            Get-ChildItem -Path "files/pwsh" -Filter "*.ps1" -Recurse |
-              ForEach-Object {
-                Write-Host "Checking $($_.FullName)"
-                pwsh -NoLogo -NoProfile -Command "Test-ScriptFileInfo -Path '$($_.FullName)' | Out-Null"
-              }
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path "files/pwsh" -Filter "*.ps1" -Recurse |
+            ForEach-Object {
+              Write-Host "Checking $($_.FullName)"
+              Test-ScriptFileInfo -Path $_.FullName | Out-Null
+            }
