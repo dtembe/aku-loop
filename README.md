@@ -459,10 +459,10 @@ Succinct learnings about how to RUN the project:
 - Serves as the shared buffer between You and the Product Manager Agent.
 - Contains the full conversation history of the requirements gathering session.
 
-### Model Remapping:
+### Model Remapping: OPTIONAL
 
-The prompts reference "Sonnet" and "Opus" models in Claude Code. 
-I prefer to use z.ai and their GLM models or sometimes will switch to local models. These are shortcuts that can be remapped to any LLM family via Claude Code settings:
+I cannot afford Claude so I use different models in Claude Code. Below is an example of "how-to" use GLM models or similarly switch to local models. 
+These are shortcuts that can be remapped to any LLM family via Claude Code settings:
 
 Windows PowerShell
 
@@ -475,6 +475,12 @@ Windows PowerShell
               "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-4.7"
             }
           }
+          ```
+          ```cli
+              (base) PS C:\Users\$USER$> $env:ANTHROPIC_AUTH_TOKEN
+              6ThisIsFakeToken7bo2WcMJ28c55VnvZ78vd2.Qj9a43LYB44ZC39
+              (base) PS C:\Users\$USER$> $env:ANTHROPIC_BASE_URL
+              https://api.z.ai/api/anthropic
           ```
 
 Linux/macOS
@@ -489,7 +495,13 @@ Linux/macOS
             }
           }
           ```
-
+        ```cli
+          $ echo $ANTHROPIC_AUTH_TOKEN
+          6ThisIsFakeToken7bo2WcMJ28c55VnvZ78vd2.Qj9a43LYB44ZC39
+          $ echo $ANTHROPIC_BASE_URL
+          https://api.z.ai/api/anthropic
+          ```
+          
 
 This allows using GPT, GLM, or other models while keeping the prompts unchanged.
 
@@ -499,14 +511,17 @@ This allows using GPT, GLM, or other models while keeping the prompts unchanged.
 ![Aku mini](artifacts/Aku-mini.jpg)
 
 ## Acknowledgments
-- **Aku Tembe** - the bestest boi. 
+
+  This implementation builds on the work of many talented individuals, and all I have done is build a little bit on top of their inspiratonal work. No credit or creativity asserted by me. I am just happy that I have acceess to so much talent to learn from.
+
+- **Clayton Farr** – [The Ralph Playbook](https://ClaytonFarr.github.io/ralph-playbook/) (comprehensive methodology guide)
 - **Geoffrey Huntley** – Original creator of [Ralph](https://ghuntley.com/ralph/)
 - **Matt Pocock** – Early overview and explanations
 - **Ryan Carson** – Community documentation
-- **Clayton Farr** – [The Ralph Playbook](https://ClaytonFarr.github.io/ralph-playbook/) (comprehensive methodology guide)
 - and many more who have contributed to the Ralph Method community.
 
-This implementation builds on their work while adding cross-platform support, git-optional operation, and model-agnostic configuration.
+## Inspiration
+- **Aku Tembe** - the bestest boi. 
 
 ---
 
