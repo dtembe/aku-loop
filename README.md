@@ -1,8 +1,8 @@
-# The Aku Loop
+# Aku Loop
 
 <img src="artifacts/Aku-icon.png" width="150" alt="Aku Logo" />
 
-**The Aku Loop** is an implementation of [Geoffrey Huntley's Ralph Method](https://ghuntley.com/ralph/) - a documentation-based development methodology that uses autonomous AI agents to build software through iterative loops.
+** Aku Loop** is an implementation of [Geoffrey Huntley's Ralph Method](https://ghuntley.com/ralph/) - a documentation-based development methodology that uses autonomous AI agents to build software through iterative loops.
 
 This repository provides both Bash and PowerShell implementations, with git-optional operation for maximum flexibility.
 
@@ -87,7 +87,7 @@ Common options for all scripts:
 
 The Ralph Method is a documentation-driven development process that leverages autonomous AI agents to iteratively build software. It breaks down high-level requirements into manageable tasks, allowing an LLM to plan, implement, test, and commit code in a structured loop.
 
-This is **The Aku Loop** - a practical, working implementation you can run today on both Unix and Windows systems.
+This is ** Aku Loop** - a practical, working implementation you can run today on both Unix and Windows systems.
 
 ### What Makes This Implementation Different
 
@@ -527,4 +527,4 @@ This allows using GPT, GLM, or other models while keeping the prompts unchanged.
 
 ## License
 
-This repository is a practical implementation of the Ralph Method. See original sources for licensing information. No claims or creativity is asserted by me or Aku!
+This repository is a practical implementation of the Ralph Method. See original sources for licensing information. No claims or creativity is asserted by Aku or me!
