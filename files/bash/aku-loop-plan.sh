@@ -86,12 +86,13 @@ preflight_checks() {
     if [ ! -d "specs" ]; then
         echo "  ✗ specs/ directory not found"
         errors=$((errors + 1))
-    elif [ -z "$(ls -A specs/ 2>/dev/null | grep -E '\.md$')" ]; then
+    elif [ -z "$(compgen -G "specs/*.md")" ]; then
         echo "  ⚠ specs/ directory is empty (no .md files)"
         echo "    Create spec files before running the loop."
         errors=$((errors + 1))
     else
-        local spec_count=$(ls specs/*.md 2>/dev/null | wc -l)
+        local spec_count
+        spec_count=$(compgen -G "specs/*.md" | wc -l)
         echo "  ✓ specs/ directory: $spec_count spec file(s) found"
     fi
     
@@ -140,9 +141,10 @@ save_state() {
 
 load_state() {
     if [ -f "$STATE_FILE" ]; then
+        # shellcheck source=/dev/null
         source "$STATE_FILE"
         echo "Resuming from iteration $ITERATION"
-        return $ITERATION
+        return "$ITERATION"
     fi
     return 0
 }
@@ -174,17 +176,23 @@ parse_iteration_summary() {
     echo "├─────────────────────────────────────────────────────────────────────┤"
     
     # Count tool calls by type
-    local file_edits=$(grep -c '"name":"Edit"' "$log_file" 2>/dev/null || echo "0")
-    local file_creates=$(grep -c '"name":"Write"' "$log_file" 2>/dev/null || echo "0")
-    local file_reads=$(grep -c '"name":"Read"' "$log_file" 2>/dev/null || echo "0")
-    local bash_calls=$(grep -c '"name":"Bash"' "$log_file" 2>/dev/null || echo "0")
-    local subagent_calls=$(grep -c '"name":"Task"' "$log_file" 2>/dev/null || echo "0")
+    local file_edits
+    file_edits=$(grep -c '"name":"Edit"' "$log_file" 2>/dev/null || echo "0")
+    local file_creates
+    file_creates=$(grep -c '"name":"Write"' "$log_file" 2>/dev/null || echo "0")
+    local file_reads
+    file_reads=$(grep -c '"name":"Read"' "$log_file" 2>/dev/null || echo "0")
+    local bash_calls
+    bash_calls=$(grep -c '"name":"Bash"' "$log_file" 2>/dev/null || echo "0")
+    local subagent_calls
+    subagent_calls=$(grep -c '"name":"Task"' "$log_file" 2>/dev/null || echo "0")
     
     printf "│ Files read:     %-5s  Files created: %-5s  Files edited: %-5s │\n" "$file_reads" "$file_creates" "$file_edits"
     printf "│ Bash commands:  %-5s  Subagents:     %-5s                       │\n" "$bash_calls" "$subagent_calls"
     
     # Check for errors in output
-    local errors=$(grep -c '"is_error":true' "$log_file" 2>/dev/null || echo "0")
+    local errors
+    errors=$(grep -c '"is_error":true' "$log_file" 2>/dev/null || echo "0")
     if [ "$errors" -gt 0 ]; then
         printf "│ ⚠ Errors encountered: %-5s                                       │\n" "$errors"
     fi
@@ -215,6 +223,7 @@ setup_logging
 ITERATION=0
 if [ "$RESUME" = true ]; then
     if [ -f "$STATE_FILE" ]; then
+        # shellcheck source=/dev/null
         source "$STATE_FILE"
         ITERATION=${ITERATION:-0}
         echo "Resuming from iteration $ITERATION"
@@ -235,8 +244,8 @@ if [ -n "$GIT_REPO" ]; then
 else
     echo "Branch:    (no git repo, skipping git operations)"
 fi
-[ $MAX_ITERATIONS -gt 0 ] && echo "Max:       $MAX_ITERATIONS iterations"
-[ $COOLDOWN -gt 0 ] && echo "Cooldown:  ${COOLDOWN}s between iterations"
+[ "$MAX_ITERATIONS" -gt 0 ] && echo "Max:       $MAX_ITERATIONS iterations"
+[ "$COOLDOWN" -gt 0 ] && echo "Cooldown:  ${COOLDOWN}s between iterations"
 [ "$LOG_ENABLED" = true ] && echo "Log:       $LOG_FILE"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
@@ -244,7 +253,7 @@ echo ""
 # Main loop
 while true; do
     # Check max iterations
-    if [ $MAX_ITERATIONS -gt 0 ] && [ $ITERATION -ge $MAX_ITERATIONS ]; then
+    if [ "$MAX_ITERATIONS" -gt 0 ] && [ "$ITERATION" -ge "$MAX_ITERATIONS" ]; then
         echo "Reached max iterations: $MAX_ITERATIONS"
         break
     fi
@@ -268,11 +277,11 @@ while true; do
     # Run Claude with selected prompt
     # Capture exit code without failing immediately
     set +e
-    cat "$PROMPT_FILE" | claude -p \
+    claude -p \
         --dangerously-skip-permissions \
         --output-format=stream-json \
         --model "$MODEL" \
-        --verbose 2>&1 | tee "$ITER_LOG"
+        --verbose < "$PROMPT_FILE" 2>&1 | tee "$ITER_LOG"
     
     CLAUDE_EXIT_CODE=$?
     set -e
@@ -309,10 +318,10 @@ while true; do
     fi
     
     # Cooldown between iterations
-    if [ $COOLDOWN -gt 0 ] && [ $MAX_ITERATIONS -ne 1 ]; then
+    if [ "$COOLDOWN" -gt 0 ] && [ "$MAX_ITERATIONS" -ne 1 ]; then
         echo ""
         echo "Cooldown: waiting ${COOLDOWN}s before next iteration..."
-        sleep $COOLDOWN
+        sleep "$COOLDOWN"
     fi
     
     echo ""
