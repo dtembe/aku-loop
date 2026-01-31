@@ -1,0 +1,163 @@
+# Aku Loop - .gitignore
+# This repository is a template/framework. Users copy files to their projects.
+# These entries prevent common temporary files and user-generated content.
+
+# =============================================================================
+# User-Generated Content (when using Aku Loop in a project)
+# =============================================================================
+specs/
+src/
+dist/
+build/
+out/
+temp/
+tmp/
+logs/
+*.log
+test-project/
+test-project/*
+_archive/
+_archive/*
+
+# =============================================================================
+# IDE & Editor Files
+# =============================================================================
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# JetBrains (IDEA, WebStorm, etc.)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS / Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# =============================================================================
+# Operating System Files
+# =============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.nfs*
+
+# =============================================================================
+# Environment & Secrets
+# =============================================================================
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+credentials.json
+secrets/
+.secrets/
+
+# =============================================================================
+# Python (if using Python projects with Aku Loop)
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# =============================================================================
+# Node.js (if using Node projects with Aku Loop)
+# =============================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+
+# =============================================================================
+# Rust (if using Rust projects with Aku Loop)
+# =============================================================================
+/target/
+Cargo.lock
+**/*.rs.bk
+*.pdb
+
+# =============================================================================
+# Git & Version Control
+# =============================================================================
+*.orig
+*.rej
+.git-rebase-todo
+
+# =============================================================================
+# Miscellaneous
+# =============================================================================
+*.tmp
+*.temp
+*.bak
+*.cache
+.project
+.settings/
+*.workspace
+
+/test-project/
+/_archive/

@@ -1,0 +1,529 @@
+# The Aku Loop
+
+![Aku Logo](artifacts/aku-bw-icon-large.png)
+
+**The Aku Loop** is an implementation of [Geoffrey Huntley's Ralph Method](https://ghuntley.com/ralph/) - a documentation-based development methodology that uses autonomous AI agents to build software through iterative loops.
+
+This repository provides both Bash and PowerShell implementations, with git-optional operation for maximum flexibility.
+
+## Quick Start
+
+### PowerShell (Windows)
+
+Follow the 3-stage process:
+
+```powershell
+cd files\pwsh
+
+# 1. SPECS Mode: Interactive interview to generate specs
+.\aku-loopy-specs.ps1
+
+# 2. PLAN Mode: Analyze specs, create tasks
+.\aku-loopy-plan.ps1 -MaxIterations 1 # New project: 1 iteration is enough
+.\aku-loopy-plan.ps1 -MaxIterations 5 # Existing codebase: more iterations for deeper analysis
+
+# 3. BUILD Mode: Execute plan, write code
+.\aku-loopy-build.ps1                 # Run indefinitely
+.\aku-loopy-build.ps1 -MaxIterations 20 # Run 20 times then stop
+```
+
+### Bash (Linux/macOS)
+
+```bash
+cd files/bash
+chmod +x *.sh
+
+# 1. SPECS Mode
+./aku-loopy-specs.sh
+
+# 2. PLAN Mode
+./aku-loopy-plan.sh 1                 # New project: 1 iteration is enough
+./aku-loopy-plan.sh 5                 # Existing codebase: more iterations
+
+# 3. BUILD Mode
+./aku-loopy-build.sh                  # Run indefinitely
+./aku-loopy-build.sh 20               # Run 20 times then stop
+```
+
+Common options for all scripts:
+- `--model` / `-Model` (e.g., `sonnet`)
+- `--resume` / `-Resume`
+- `--cooldown` / `-Cooldown`
+```
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Workflow](#workflow)
+- [Installation](#installation)
+- [Repository Structure](#repository-structure)
+- [Key Principles](#key-principles)
+- [Loop Mechanics](#loop-mechanics)
+- [Configuration](#configuration)
+- [Enhancements](#enhancements)
+
+---
+
+## Overview
+
+The Ralph Method is a documentation-driven development process that leverages autonomous AI agents to iteratively build software. It breaks down high-level requirements into manageable tasks, allowing an LLM to plan, implement, test, and commit code in a structured loop.
+
+This is **The Aku Loop** - a practical, working implementation you can run today on both Unix and Windows systems.
+
+### What Makes This Implementation Different
+
+| Feature | Description |
+|---------|-------------|
+| **Dedicated Modes** | Separate scripts for `plan` and `build` ensure clear intent and execution context |
+| **Cross-Platform** | Bash for Unix/macOS, PowerShell for Windows |
+| **Git-Optional** | Automatically detects git repos; skips version control if not present |
+| **Model Agnostic** | Works with any LLM family (Claude, GPT, GLM) via Claude Code settings |
+| **Ready to Use** | Copy files to any project and run |
+
+---
+
+## Workflow
+
+### 🗘 Three Phases, Two Prompts, One Loop
+
+This isn't just "a loop that codes." It's a funnel with 3 Phases, 2 Prompts, and 1 Loop.
+
+#### Phase 1. Define Requirements (Interactive Interview)
+
+Instead of writing markdown files manually, use the interactive Product Manager agent to define your project.
+
+```powershell
+# Windows
+.\aku-loopy-specs.ps1
+```
+
+```bash
+# Linux/macOS
+./aku-loopy-specs.sh
+```
+
+**The Loop:**
+1.  Agent initializes a conversation in `SPECS_INTERVIEW.md`.
+2.  You write your answers in the file and save.
+3.  Agent reads the file, asks clarifying questions, and effectively interviews you.
+4.  Once requirements are clear, Agent automatically writes detailed files to the `specs/` directory.
+
+#### Phase 2. Planning
+
+
+Run `aku-loopy-plan` to analyze specs and generate the implementation plan.
+
+- **Objective:** Generate/update `IMPLEMENTATION_PLAN.md`
+- **Activity:** Gap analysis (specs vs code)
+- **Output:** A prioritized TODO list—no implementation, no commits
+- **Context:** `PROMPT_plan.md` + `specs/*` + existing code
+
+**How many iterations?**
+
+| Scenario | Recommended Iterations |
+|----------|------------------------|
+| **New/greenfield project** (empty `src/`) | 1 iteration |
+| **Existing codebase** with partial implementation | 2-5 iterations |
+| **Complex project** with many specs | 3-5 iterations |
+| **Specs changed** after partial build | 1-2 iterations |
+
+> **Tip:** For a brand new project, use `-MaxIterations 1`. The agent will generate a complete plan in one pass. Running more iterations just re-confirms the same plan. Save those cycles for Build mode where iterations produce actual code.
+
+#### Phase 3. Building
+
+Run `aku-loopy-build` to execute the plan.
+
+- **Objective:** Implement features, fix bugs, update plan
+- **Activity:** Reads `IMPLEMENTATION_PLAN.md`, picks top task, implements, tests
+- **Context:** `PROMPT_build.md` + `AGENTS.md` + `IMPLEMENTATION_PLAN.md`
+
+**Auto-completion detection:** The build script automatically stops when:
+- All tasks in `IMPLEMENTATION_PLAN.md` are marked complete (✅, `[x]`, `DONE`)
+- Claude reports "nothing to implement" or similar completion phrases
+
+This means you can run without `-MaxIterations` and trust it to stop when done.
+
+**Why separate scripts?**
+- Clarity: Clearly separates the "thinking" (Planning) from the "doing" (Building)
+- Safety: Planning mode is read-only regarding code changes (it only writes the plan)
+- Simplicity: Each script has a single focus and default configuration
+
+
+**PLANNING mode loop lifecycle:**
+1. Subagents study `specs/*` and existing `/src`
+2. Compare specs against code (gap analysis)
+3. Create/update `IMPLEMENTATION_PLAN.md` with prioritized tasks
+4. No implementation
+
+**BUILDING mode loop lifecycle:**
+1. _Orient_ – subagents study `specs/*` (requirements)
+2. _Read plan_ – study `IMPLEMENTATION_PLAN.md`
+3. _Select_ – pick the most important task
+4. _Investigate_ – subagents study relevant `/src` ("don't assume not implemented")
+5. _Implement_ – N subagents for file operations
+6. _Validate_ – 1 subagent for build/tests (backpressure)
+7. _Update `IMPLEMENTATION_PLAN.md`_ – mark task done, note discoveries/bugs
+8. _Update `AGENTS.md`_ – if operational learnings
+9. _Commit_ (if in git repo)
+10. _Loop ends_ → context cleared → next iteration starts fresh
+
+#### Concepts
+
+| Term                    | Definition                                                      |
+| ----------------------- | --------------------------------------------------------------- |
+| _Job to be Done (JTBD)_ | High-level user need or outcome                                 |
+| _Topic of Concern_      | A distinct aspect/component within a JTBD                       |
+| _Spec_                  | Requirements doc for one topic of concern (`specs/FILENAME.md`) |
+| _Task_                  | Unit of work derived from comparing specs to code               |
+| _SPECS_INTERVIEW.md_    | The "chat room" file for requirements gathering                 |
+
+**Relationships:**
+- 1 JTBD → multiple topics of concern
+- 1 topic of concern → 1 spec
+- 1 spec → multiple tasks (specs are larger than tasks)
+
+**Topic Scope Test: "One Sentence Without 'And'"**
+
+Can you describe the topic of concern in one sentence without conjoining unrelated capabilities?
+- ✓ "The color extraction system analyzes images to identify dominant colors"
+- ✗ "The user system handles authentication, profiles, and billing" → 3 topics
+
+---
+
+## Installation
+
+### 1. Copy Files to Your Project
+
+```bash
+# For Bash/Linux/macOS
+cp -r /path/to/Aku-Loop/files/bash/* /path/to/your/project/
+
+# For PowerShell/Windows
+Copy-Item -Recurse C:\path\to\Aku-Loop\files\pwsh\* C:\path\to\your\project\
+```
+
+### 2. Initialize Git Repository (Recommended)
+
+This repo includes helper scripts to bootstrap a new git repository on GitHub. 
+
+**Why use this?**
+The Aku Loop works best when it can commit and push changes after every iteration. This allows you to:
+- Review each autonomous step in your git history.
+- Revert safely if the agent goes off track.
+- Maintain a remote backup.
+
+```bash
+# Bash: Initialize git repo + create private GitHub remote
+./setup_git_repo.sh
+```
+
+```powershell
+# PowerShell: Initialize git repo + create private GitHub remote
+.\setup_git_repo.ps1
+```
+
+*Requires [GitHub CLI](https://cli.github.com/) (`gh`) to be installed and authenticated (`gh auth login`).*
+
+### 3. Move Files & Configure
+
+Move the setup files to your project root (if they aren't already there):
+
+```bash
+# If you cloned/downloaded this repo to 'Aku-Loop', copy the files to 'my-project'
+cp -r Aku-Loop/files/bash/* my-project/
+# OR
+Copy-Item -Recurse Aku-Loop\files\pwsh\* my-project\
+```
+
+Then create your specifications directory:
+
+```bash
+mkdir specs
+```
+
+
+### 4. Configure AGENTS.md
+
+Edit `AGENTS.md` with your project's build, test, and validation commands.
+
+### 5. Run the Loop
+
+See [Quick Start](#quick-start) above.
+
+---
+
+## Repository Structure
+
+```
+Aku-Loop/
+├── README.md                        # This file
+├── CLAUDE.md                        # Guidance for Claude Code
+├── _archive/                        # Archived scripts
+│   ├── aku-loopy.sh                 # V2 Combined Bash script
+│   ├── aku_loopy.ps1                # V2 Combined PowerShell script
+│   ├── loop_v1.sh                   # Original basic Bash script
+│   └── loop_v1.ps1                  # Original basic PowerShell script
+├── files/
+│   ├── bash/                        # Bash/Linux/macOS implementation
+│   │   ├── aku-loopy-specs.sh       # Spec generation script (Interview Mode)
+│   │   ├── aku-loopy-plan.sh        # Plan mode script
+│   │   ├── aku-loopy-build.sh       # Build mode script
+│   │   ├── setup_git_repo.sh        # Helper: Create git repo
+│   │   ├── PROMPT_specs_interview.md # SPECS mode prompt
+│   │   ├── PROMPT_build.md          # BUILDING mode prompt
+│   │   ├── PROMPT_plan.md           # PLANNING mode prompt
+│   │   ├── AGENTS.md                # Operational guide template
+│   │   └── IMPLEMENTATION_PLAN.md   # Generated task list (example)
+│   └── pwsh/                        # PowerShell/Windows implementation
+│       ├── aku-loopy-specs.ps1      # Spec generation script (Interview Mode)
+│       ├── aku-loopy-build.ps1      # Build mode script
+│       ├── aku-loopy-plan.ps1       # Plan mode script
+│       ├── setup_git_repo.ps1       # Helper: Create git repo
+│       ├── PROMPT_specs_interview.md # SPECS mode prompt
+│       ├── PROMPT_build.md          # BUILDING mode prompt
+│       ├── PROMPT_plan.md           # PLANNING mode prompt
+│       ├── AGENTS.md                # Operational guide template
+│       └── IMPLEMENTATION_PLAN.md   # Generated task list (example)
+│       ├── PROMPT_specs_interview.md # SPECS mode instructions
+│       ├── PROMPT_build.md          # BUILDING mode instructions
+│       ├── PROMPT_plan.md           # PLANNING mode instructions
+│       ├── AGENTS.md                # Operational guide template
+│       └── IMPLEMENTATION_PLAN.md   # Generated task list (example)
+
+# Your project structure
+├── aku-loopy-specs.ps1              # Spec generator (Interview loop)
+├── aku-loopy-build.ps1              # Build loop
+├── aku-loopy-plan.ps1               # Plan loop
+├── PROMPT_specs_interview.md        # SPECS mode prompt
+├── PROMPT_build.md                  # BUILDING mode prompt
+├── PROMPT_plan.md                   # PLANNING mode prompt
+├── AGENTS.md                        # Your project's operational guide
+├── IMPLEMENTATION_PLAN.md           # Generated task list
+├── SPECS_INTERVIEW.md               # Transcript of spec interview
+├── specs/                           # Requirement specs (one per JTBD topic)
+│   ├── [jtbd-topic-a].md
+│   └── [jtbd-topic-b].md
+└── src/                             # Your application source code
+    └── lib/                         # Shared utilities
+```
+
+---
+
+## Key Principles
+
+###  Context Is _Everything_
+
+- When 200K+ tokens advertised = ~176K truly usable
+- 40-60% context utilization for "smart zone"
+- Tight tasks + 1 task per loop = _100% smart zone context utilization_
+
+This drives everything:
+- Use the main agent as a scheduler; spawn subagents for expensive work
+- Each subagent gets ~156kb that's garbage collected
+- Prefer Markdown over JSON for better token efficiency
+
+###  Steering Dan: Patterns + Backpressure
+
+Create the right signals & gates to steer successful output:
+
+**Upstream** (deterministic setup):
+- Every loop loads the same files: `PROMPT.md` + `AGENTS.md`
+- Your existing code shapes what gets used and generated
+- Add utilities/patterns to steer toward correct implementations
+
+**Downstream** (backpressure):
+- Tests, typechecks, lints, builds reject invalid/unacceptable work
+- `AGENTS.md` specifies actual commands (prompt says "run tests" generically)
+
+###  Let Dan Ralph
+
+Aku-Loop's effectiveness comes from trusting it to do the right thing (eventually):
+
+- Lean into LLM's ability to self-identify, self-correct and self-improve
+- Eventual consistency achieved through iteration
+- The plan is disposable—regenerate when wrong/stale
+
+###  Move Outside the Loop
+
+To get the most out of Dan, you need to get out of its way:
+
+- Dan should do _all_ the work, including deciding what to implement next
+- Your job: engineer the setup and environment for success
+- Observe and course correct—tune like a guitar
+- Add "signs" based on observed failures
+
+---
+
+## Loop Mechanics
+
+### Outer Loop Control
+
+**Minimal form:**
+```bash
+# How the loop works conceptually (pseudo-code)
+while true; do 
+    run_claude_agent(PROMPT)
+    git_commit_changes()
+    if no_more_tasks; then break; fi
+done
+```
+
+**How task continuation works:**
+1. Bash/PowerShell loop runs → feeds `PROMPT_{mode}.md` to claude
+2. **PLAN Mode**: Agent reads specs, checks code, updates `IMPLEMENTATION_PLAN.md`.
+3. **BUILD Mode**: Agent reads `IMPLEMENTATION_PLAN.md`, picks top task, implements it, runs tests, commits code.
+4. **Loop restarts** immediately → fresh context window for the next task.
+
+**Key insight:** The `IMPLEMENTATION_PLAN.md` file persists on disk between iterations, acting as shared state. No sophisticated orchestration needed.
+
+### Script Usage
+
+| Feature | Description |
+|---------|-------------|
+| **Pre-flight Checks** | Validates specs/, AGENTS.md, and claude CLI exist before starting |
+| **Configurable Model** | `--model` flag to override default (opus/sonnet/etc) |
+| **Log File Output** | Writes JSON output to timestamped log files in `./logs/` |
+| **Iteration Summary** | Displays files read/created/edited, tool calls per iteration |
+| **Cooldown Timer** | Optional delay between iterations to prevent rate limiting |
+| **Resume Capability** | `--resume` flag to continue from last saved iteration |
+| **Exit Code Handling** | Stops loop on critical failures (exit code > 1) |
+| **Auto-Completion (Build)** | Detects when all tasks are done and exits gracefully |
+
+**Bash (`aku-loopy-plan.sh`, `aku-loopy-build.sh`, `aku-loopy-specs.sh`):**
+```bash
+./aku-loopy-specs.sh                  # Interactive specs interview
+./aku-loopy-build.sh                  # Build mode, unlimited
+./aku-loopy-build.sh 20               # Build mode, max 20 iterations
+./aku-loopy-plan.sh                   # Plan mode, unlimited
+./aku-loopy-plan.sh 5                 # Plan mode, max 5 iterations
+./aku-loopy-build.sh --model sonnet   # Use sonnet model instead of opus
+./aku-loopy-build.sh --cooldown 30    # 30s delay between iterations
+./aku-loopy-build.sh --resume         # Resume interrupted run
+./aku-loopy-build.sh --log-dir ./logs # Custom log directory
+./aku-loopy-build.sh --no-log         # Disable file logging
+```
+
+**PowerShell (`aku-loopy-plan.ps1`, `aku-loopy-build.ps1`, `aku-loopy-specs.ps1`):**
+```powershell
+.\aku-loopy-specs.ps1                 # Interactive specs interview
+.\aku-loopy-build.ps1                 # Build mode, unlimited
+.\aku-loopy-build.ps1 -MaxIterations 20
+.\aku-loopy-plan.ps1                  # Plan mode, unlimited
+.\aku-loopy-plan.ps1 -MaxIterations 5
+.\aku-loopy-build.ps1 -Model sonnet   # Use sonnet model
+.\aku-loopy-build.ps1 -Cooldown 30    # 30s delay between iterations
+.\aku-loopy-build.ps1 -Resume         # Resume interrupted run
+.\aku-loopy-build.ps1 -LogDir ./logs  # Custom log directory
+.\aku-loopy-build.ps1 -NoLog          # Disable file logging
+```
+
+
+**State File:** The loop scripts create a `.aku_loop_state` file to track iteration progress. This file is automatically cleaned up on successful completion.
+
+### Git-Optional Operation
+
+Both scripts automatically detect if running inside a git repository:
+
+- **In git repo**: Normal behavior with commits and pushes after each iteration
+- **No git repo**: Skips git operations, loop continues without version control
+
+This allows experimentation and learning without requiring git initialization.
+
+### Claude CLI Flags Used
+
+| Flag | Purpose |
+|------|---------|
+| `-p` | Headless mode (reads prompt from stdin) |
+| `--dangerously-skip-permissions` | Auto-approve all tool calls (required for autonomous operation) |
+| `--output-format=stream-json` | Structured output for logging/monitoring |
+| `--model opus` | Uses Opus for complex reasoning (task selection, prioritization) |
+| `--verbose` | Detailed execution logging |
+
+**Security Warning:** `--dangerously-skip-permissions` bypasses Claude's permission system. Running without a sandbox exposes credentials, cookies, and tokens. Run in isolated environments with minimum viable access.
+
+---
+
+## Configuration
+
+### AGENTS.md
+
+The single, canonical "heart of the loop"—a concise operational guide (~60 lines max):
+
+```markdown
+## Build & Run
+
+Succinct rules for how to BUILD the project:
+
+## Validation
+
+Run these after implementing to get immediate feedback:
+
+- Tests: `[test command]`
+- Typecheck: `[typecheck command]`
+- Lint: `[lint command]`
+
+## Operational Notes
+
+Succinct learnings about how to RUN the project:
+
+...
+
+### Codebase Patterns
+
+...
+```
+
+**Critical:** Keep `AGENTS.md` brief. Status updates belong in `IMPLEMENTATION_PLAN.md`. A bloated `AGENTS.md` pollutes every future loop's context.
+
+### IMPLEMENTATION_PLAN.md
+
+- Generated by Dan during PLANNING mode
+- Updated during BUILDING mode (mark complete, add discoveries)
+- No predefined template—let Dan/LLM dictate format
+- Acts as shared state between iterations
+- Can be regenerated anytime—disposable
+
+### SPECS_INTERVIEW.md
+
+- Created automatically by `aku-loopy-specs` interactive mode.
+- Serves as the shared buffer between You and the Product Manager Agent.
+- Contains the full conversation history of the requirements gathering session.
+
+### Model Remapping
+
+The prompts reference "Sonnet" and "Opus" models. These are shortcuts that can be remapped to any LLM family via Claude Code settings:
+
+```json
+{
+  "env": {
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-4.7",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-4.7"
+  }
+}
+```
+
+This allows using GPT, GLM, or other models while keeping the prompts unchanged.
+
+---
+## Enhancements
+
+---
+![Aku mini](artifacts/Aku-mini.jpg)
+
+## Acknowledgments
+- **Aku Tembe** - the bestest boi. 
+- **Geoffrey Huntley** – Original creator of [Ralph](https://ghuntley.com/ralph/)
+- **Matt Pocock** – Early overview and explanations
+- **Ryan Carson** – Community documentation
+- **Clayton Farr** – [The Ralph Playbook](https://ClaytonFarr.github.io/ralph-playbook/) (comprehensive methodology guide)
+
+
+This implementation builds on their work while adding cross-platform support, git-optional operation, and model-agnostic configuration.
+
+---
+
+## License
+
+This repository is a practical implementation of the Ralph Method. See original sources for licensing information. No claims or creativity is asserted by the current author. 
