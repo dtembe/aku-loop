@@ -8,41 +8,59 @@ This repository provides both Bash and PowerShell implementations, with git-opti
 
 ## Quick Start
 
-### PowerShell (Windows)
+### 1. Get the Tools
 
-Follow the 3-stage process:
+Clone the repository to get the scripts:
 
+```bash
+git clone https://github.com/dtembe/aku-loop.git
+```
+
+### 2. Initialize Your Project
+
+Copy the scripts to *your* project root (not inside the aku-loop folder):
+
+**PowerShell (Windows)**
 ```powershell
-cd files\pwsh
+# Copy scripts to your project
+Copy-Item -Recurse .\aku-loop\files\pwsh\* C:\path\to\your-project\
+cd C:\path\to\your-project\
+```
 
+**Bash (Linux/macOS)**
+```bash
+# Copy scripts to your project
+cp -r ./aku-loop/files/bash/* /path/to/your-project/
+cd /path/to/your-project/
+chmod +x *.sh
+```
+
+### 3. Run the Loop
+
+Now run the 3-stage process directly from your project root:
+
+**PowerShell**
+```powershell
 # 1. SPECS Mode: Interactive interview to generate specs
 .\aku-loopy-specs.ps1
 
 # 2. PLAN Mode: Analyze specs, create tasks
 .\aku-loopy-plan.ps1 -MaxIterations 1 # New project: 1 iteration is enough
-.\aku-loopy-plan.ps1 -MaxIterations 5 # Existing codebase: more iterations for deeper analysis
 
 # 3. BUILD Mode: Execute plan, write code
-.\aku-loopy-build.ps1                 # Run indefinitely
-.\aku-loopy-build.ps1 -MaxIterations 20 # Run 20 times then stop
+.\aku-loopy-build.ps1
 ```
 
-### Bash (Linux/macOS)
-
+**Bash**
 ```bash
-cd files/bash
-chmod +x *.sh
-
 # 1. SPECS Mode
 ./aku-loopy-specs.sh
 
 # 2. PLAN Mode
 ./aku-loopy-plan.sh 1                 # New project: 1 iteration is enough
-./aku-loopy-plan.sh 5                 # Existing codebase: more iterations
 
 # 3. BUILD Mode
-./aku-loopy-build.sh                  # Run indefinitely
-./aku-loopy-build.sh 20               # Run 20 times then stop
+./aku-loopy-build.sh
 ```
 
 Common options for all scripts:
