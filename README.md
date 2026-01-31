@@ -6,6 +6,15 @@
 
 This repository provides both Bash and PowerShell implementations, with git-optional operation for maximum flexibility.
 
+### Who this is for
+
+Aku Loop is for folks who want to actually *run* the Ralph Method in their own projects without building an orchestration layer from scratch.
+
+- Tinkerers experimenting with autonomous LLM agents on real codebases
+- DevOps / SRE / platform engineers who live in Bash or PowerShell
+- Developers who prefer a docs-first, “specs → plan → build” workflow over one-shot code generation
+
+
 ## Quick Start
 
 ### 1. Get the Tools
@@ -68,6 +77,22 @@ Common options for all scripts:
 - `--resume` / `-Resume`
 - `--cooldown` / `-Cooldown`
 ```
+
+---
+
+## Getting Started in 5 Minutes
+
+If you just want to see the loop in action:
+
+1. Create a throwaway folder and copy the Bash or PowerShell scripts into it.
+2. Add a tiny “hello world” style project (or let the loop create one).
+3. Run SPECS → PLAN → BUILD once and watch which files change.
+
+You should end up with:
+
+- A `specs/` folder containing at least one spec markdown file
+- An `IMPLEMENTATION_PLAN.md` with a small TODO list
+- New or updated files in `src/` that match the plan
 
 ---
 
@@ -208,6 +233,21 @@ Can you describe the topic of concern in one sentence without conjoining unrelat
 - ✗ "The user system handles authentication, profiles, and billing" → 3 topics
 
 ---
+## FAQ
+
+**Do I have to use git?**  
+No. If there is no git repo, Aku Loop skips git commands and just edits files on disk. You can add git later if you want commit history.
+
+**Does this only work with Claude?**  
+The scripts call the `claude` CLI, but you can remap the underlying models to GPT, GLM, or local models via Claude Code settings (see the Model Remapping section).
+
+**Is this safe to run on my main repo?**  
+Treat this like any other autonomous agent: start in a throwaway or feature branch, keep backups, and never point it at production-only repos.
+
+**How do I stop a run that’s stuck?**  
+You can interrupt the script (Ctrl+C). On the next run, use the `--resume` / `-Resume` flags if you want to pick up where you left off, or delete `.aku_loop_state` to start clean.
+
+---
 
 ## Installation
 
@@ -270,7 +310,23 @@ Edit `AGENTS.md` with your project's build, test, and validation commands.
 See [Quick Start](#quick-start) above.
 
 ---
+---
+## Security & Safety
 
+Aku Loop is intentionally opinionated about safety, but you are still responsible for where you run it.
+
+- **Never** run this against production-only repositories or machines that hold sensitive data.
+- Prefer disposable branches or throwaway repos while you are learning the workflow.
+- Keep API keys, tokens, and secrets in environment variables or local config files that are gitignored. Do not paste them into `AGENTS.md`, specs, or prompts.
+- Logs may include model responses and file paths; avoid sharing raw logs from sensitive projects.
+
+The `claude` CLI is invoked with `--dangerously-skip-permissions` so the loop can run without asking you to approve every single tool call. That means you should:
+
+- Use a dedicated user profile or environment with minimal browser sessions and credentials
+- Avoid running in the same shell that has production cloud credentials loaded
+- Prefer local sandboxes (VMs, dev containers, WSL, etc.) when in doubt
+
+---
 
 ## Repository Structure
 
@@ -320,7 +376,17 @@ Aku-Loop/
 - The root contains only essential project files and documentation.
 
 ---
+## Versioning & Maintenance
 
+This repo follows simple, human-scale versioning:
+
+- Tagged releases live under the [Releases](./releases) tab (starting with `v1.0.0`).
+- The scripts are meant to be stable; prompts and docs may evolve as I learn more.
+- I test primarily on Windows + WSL + macOS with the latest `claude` CLI and GitHub CLI (`gh`).
+
+Bug reports, small fixes, and improvements to docs are very welcome. If you open an Issue, including your OS, shell (Bash / PowerShell), and a short command transcript helps a lot.
+
+---
 
 
 ## Loop Mechanics
