@@ -155,8 +155,8 @@ while true; do
         exit 1
     fi
 
-    TRANSCRIPT=$(cat "$INTERVIEW_FILE")
-    SYSTEM_PROMPT=$(cat "$PROMPT_FILE")
+    TRANSCRIPT=$(<"$INTERVIEW_FILE")
+    SYSTEM_PROMPT=$(<"$PROMPT_FILE")
     FULL_PROMPT="${SYSTEM_PROMPT}\n\n--- TRANSCRIPT START ---\n${TRANSCRIPT}\n--- TRANSCRIPT END ---\n\nASSISTANT (Aku):"
     
     echo -e -n "${GRAY}Thinking...${NC}"
