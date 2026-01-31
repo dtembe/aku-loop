@@ -1,6 +1,6 @@
 # The Aku Loop
 
-![Aku Logo](artifacts/aku-bw-icon-large.png)
+<img src="artifacts/Aku-icon.png" width="150" alt="Aku Logo" />
 
 **The Aku Loop** is an implementation of [Geoffrey Huntley's Ralph Method](https://ghuntley.com/ralph/) - a documentation-based development methodology that uses autonomous AI agents to build software through iterative loops.
 
@@ -108,7 +108,7 @@ Instead of writing markdown files manually, use the interactive Product Manager 
 1.  Agent initializes a conversation in `SPECS_INTERVIEW.md`.
 2.  You write your answers in the file and save.
 3.  Agent reads the file, asks clarifying questions, and effectively interviews you.
-4.  Once requirements are clear, Agent automatically writes detailed files to the `specs/` directory.
+4.  Once requirements are clear, Agent automatically writes detailed files to the `specs/` directory using the `NN-jtd-topic.md` convention.
 
 #### Phase 2. Planning
 
@@ -173,14 +173,14 @@ This means you can run without `-MaxIterations` and trust it to stop when done.
 
 | Term                    | Definition                                                      |
 | ----------------------- | --------------------------------------------------------------- |
-| _Job to be Done (JTBD)_ | High-level user need or outcome                                 |
-| _Topic of Concern_      | A distinct aspect/component within a JTBD                       |
-| _Spec_                  | Requirements doc for one topic of concern (`specs/FILENAME.md`) |
+| _Job To Do (JTD)_       | High-level user need or outcome                                 |
+| _Topic of Concern_      | A distinct aspect/component within a JTD (Job To Do)            |
+| _Spec_                  | Requirements doc for one topic of concern (`specs/NN-jtd-topic.md`) |
 | _Task_                  | Unit of work derived from comparing specs to code               |
 | _SPECS_INTERVIEW.md_    | The "chat room" file for requirements gathering                 |
 
 **Relationships:**
-- 1 JTBD → multiple topics of concern
+- 1 JTD → multiple topics of concern
 - 1 topic of concern → 1 spec
 - 1 spec → multiple tasks (specs are larger than tasks)
 
@@ -254,60 +254,74 @@ See [Quick Start](#quick-start) above.
 
 ---
 
+
 ## Repository Structure
+
+> **Note:** The following directories are excluded from version control via `.gitignore` and are not pushed to GitHub: `_archive/` and `test-project/`.
 
 ```
 Aku-Loop/
-├── README.md                        # This file
-├── CLAUDE.md                        # Guidance for Claude Code
-├── _archive/                        # Archived scripts
-│   ├── aku-loopy.sh                 # V2 Combined Bash script
-│   ├── aku_loopy.ps1                # V2 Combined PowerShell script
-│   ├── loop_v1.sh                   # Original basic Bash script
-│   └── loop_v1.ps1                  # Original basic PowerShell script
-├── files/
-│   ├── bash/                        # Bash/Linux/macOS implementation
-│   │   ├── aku-loopy-specs.sh       # Spec generation script (Interview Mode)
-│   │   ├── aku-loopy-plan.sh        # Plan mode script
-│   │   ├── aku-loopy-build.sh       # Build mode script
-│   │   ├── setup_git_repo.sh        # Helper: Create git repo
-│   │   ├── PROMPT_specs_interview.md # SPECS mode prompt
-│   │   ├── PROMPT_build.md          # BUILDING mode prompt
-│   │   ├── PROMPT_plan.md           # PLANNING mode prompt
-│   │   ├── AGENTS.md                # Operational guide template
-│   │   └── IMPLEMENTATION_PLAN.md   # Generated task list (example)
-│   └── pwsh/                        # PowerShell/Windows implementation
-│       ├── aku-loopy-specs.ps1      # Spec generation script (Interview Mode)
-│       ├── aku-loopy-build.ps1      # Build mode script
-│       ├── aku-loopy-plan.ps1       # Plan mode script
-│       ├── setup_git_repo.ps1       # Helper: Create git repo
-│       ├── PROMPT_specs_interview.md # SPECS mode prompt
-│       ├── PROMPT_build.md          # BUILDING mode prompt
-│       ├── PROMPT_plan.md           # PLANNING mode prompt
-│       ├── AGENTS.md                # Operational guide template
-│       └── IMPLEMENTATION_PLAN.md   # Generated task list (example)
-│       ├── PROMPT_specs_interview.md # SPECS mode instructions
-│       ├── PROMPT_build.md          # BUILDING mode instructions
-│       ├── PROMPT_plan.md           # PLANNING mode instructions
-│       ├── AGENTS.md                # Operational guide template
-│       └── IMPLEMENTATION_PLAN.md   # Generated task list (example)
-
-# Your project structure
-├── aku-loopy-specs.ps1              # Spec generator (Interview loop)
-├── aku-loopy-build.ps1              # Build loop
-├── aku-loopy-plan.ps1               # Plan loop
-├── PROMPT_specs_interview.md        # SPECS mode prompt
-├── PROMPT_build.md                  # BUILDING mode prompt
-├── PROMPT_plan.md                   # PLANNING mode prompt
-├── AGENTS.md                        # Your project's operational guide
-├── IMPLEMENTATION_PLAN.md           # Generated task list
-├── SPECS_INTERVIEW.md               # Transcript of spec interview
-├── specs/                           # Requirement specs (one per JTBD topic)
-│   ├── [jtbd-topic-a].md
-│   └── [jtbd-topic-b].md
-└── src/                             # Your application source code
-    └── lib/                         # Shared utilities
+├── README.md                # This file
+├── CLAUDE.md                # Guidance for Claude Code
+├── LICENSE                  # License file
+├── .gitignore               # Git ignore rules
+├── artifacts/               # Images and other static assets
+├── files/                   # Main implementation (not ignored)
+│   ├── bash/                # Bash/Linux/macOS scripts and templates
+│   │   ├── aku-loopy-specs.sh
+│   │   ├── aku-loopy-plan.sh
+│   │   ├── aku-loopy-build.sh
+│   │   ├── setup_git_repo.sh
+│   │   ├── PROMPT_specs_interview.md
+│   │   ├── PROMPT_build.md
+│   │   ├── PROMPT_plan.md
+│   │   ├── AGENTS.md
+│   │   ├── IMPLEMENTATION_PLAN.md
+│   │   ├── specs/           # Example specs (not tracked in template)
+│   │   └── src/             # Example src (not tracked in template)
+│   └── pwsh/                # PowerShell/Windows scripts and templates
+│       ├── aku-loopy-specs.ps1
+│       ├── aku-loopy-plan.ps1
+│       ├── aku-loopy-build.ps1
+│       ├── setup_git_repo.ps1
+│       ├── PROMPT_specs_interview.md
+│       ├── PROMPT_build.md
+│       ├── PROMPT_plan.md
+│       ├── AGENTS.md
+│       ├── IMPLEMENTATION_PLAN.md
+│       ├── logs/            # Log files (gitignored)
+│       ├── specs/           # Example specs (gitignored)
+│       └── src/             # Example src (gitignored)
+├── artifacts/               # Images and other static assets
+├── _archive/                # Archived scripts (not tracked in git)
+│   ├── aku-loopy.sh
+│   ├── aku_loopy.ps1
+│   ├── loop.ps1
+│   ├── loop.sh
+│   ├── loop_v1.ps1
+│   └── loop_v1.sh
+├── test-project/            # Example/test project (not tracked in git)
+│   ├── aku-loopy-build.ps1
+│   ├── aku-loopy-plan.ps1
+│   ├── aku-loopy-specs.ps1
+│   ├── AGENTS.md
+│   ├── IMPLEMENTATION_PLAN.md
+│   ├── logs/
+│   ├── loop.ps1
+│   ├── PROMPT_build.md
+│   ├── PROMPT_plan.md
+│   ├── PROMPT_specs_interview.md
+│   ├── setup_git_repo.ps1
+│   ├── SPECS_INTERVIEW.md
+│   ├── specs/
+│   └── src/
 ```
+
+**Key points:**
+- `_archive/` and `test-project/` are excluded from version control and are not pushed to GitHub.
+- `logs/`, `specs/`, and `src/` inside implementation folders are also gitignored by default.
+- Only the main scripts, prompts, and templates in `files/bash/` and `files/pwsh/` are tracked.
+- The root contains only essential project files and documentation.
 
 ---
 
@@ -324,7 +338,8 @@ This drives everything:
 - Each subagent gets ~156kb that's garbage collected
 - Prefer Markdown over JSON for better token efficiency
 
-###  Steering Dan: Patterns + Backpressure
+
+###  Steering Aku-Loopy: Patterns + Backpressure
 
 Create the right signals & gates to steer successful output:
 
@@ -337,19 +352,22 @@ Create the right signals & gates to steer successful output:
 - Tests, typechecks, lints, builds reject invalid/unacceptable work
 - `AGENTS.md` specifies actual commands (prompt says "run tests" generically)
 
-###  Let Dan Ralph
 
-Aku-Loop's effectiveness comes from trusting it to do the right thing (eventually):
+###  Let Aku-Loopy Ralph
+
+
+Aku-Loopy's effectiveness comes from trusting it to do the right thing (eventually):
 
 - Lean into LLM's ability to self-identify, self-correct and self-improve
 - Eventual consistency achieved through iteration
 - The plan is disposable—regenerate when wrong/stale
 
+
 ###  Move Outside the Loop
 
-To get the most out of Dan, you need to get out of its way:
+To get the most out of Aku-Loopy, you need to get out of its way:
 
-- Dan should do _all_ the work, including deciding what to implement next
+- Aku-Loopy should do _all_ the work, including deciding what to implement next
 - Your job: engineer the setup and environment for success
 - Observe and course correct—tune like a guitar
 - Add "signs" based on observed failures
@@ -477,11 +495,12 @@ Succinct learnings about how to RUN the project:
 
 **Critical:** Keep `AGENTS.md` brief. Status updates belong in `IMPLEMENTATION_PLAN.md`. A bloated `AGENTS.md` pollutes every future loop's context.
 
+
 ### IMPLEMENTATION_PLAN.md
 
-- Generated by Dan during PLANNING mode
+- Generated by Aku-Loopy during PLANNING mode
 - Updated during BUILDING mode (mark complete, add discoveries)
-- No predefined template—let Dan/LLM dictate format
+- No predefined template—let Aku-Loopy/LLM dictate format
 - Acts as shared state between iterations
 - Can be regenerated anytime—disposable
 
@@ -491,18 +510,32 @@ Succinct learnings about how to RUN the project:
 - Serves as the shared buffer between You and the Product Manager Agent.
 - Contains the full conversation history of the requirements gathering session.
 
-### Model Remapping
+### Model Remapping:
 
-The prompts reference "Sonnet" and "Opus" models. These are shortcuts that can be remapped to any LLM family via Claude Code settings:
+The prompts reference "Sonnet" and "Opus" models in Claude Code. I prefer to use z.ai and their GLM models or sometimes will switch to local models. These are shortcuts that can be remapped to any LLM family via Claude Code settings:
 
-```json
-{
-  "env": {
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-4.7",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-4.7"
-  }
-}
-```
+```json Windows PowerShell
+          (base) PS C:\Users\$USER> more .claude\settings.json 
+          {
+            "env": {
+              "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-4.5-air",
+              "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-4.7",
+              "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-4.7"
+            }
+          }
+          ```
+
+          ```bash Linux/macOS
+          $ cat ~/.claude/settings.json 
+          {
+            "env": {
+              "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-4.5-air",
+              "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-4.7",
+              "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-4.7"
+            }
+          }
+          ```
+
 
 This allows using GPT, GLM, or other models while keeping the prompts unchanged.
 
@@ -518,7 +551,7 @@ This allows using GPT, GLM, or other models while keeping the prompts unchanged.
 - **Matt Pocock** – Early overview and explanations
 - **Ryan Carson** – Community documentation
 - **Clayton Farr** – [The Ralph Playbook](https://ClaytonFarr.github.io/ralph-playbook/) (comprehensive methodology guide)
-
+- and many more who have contributed to the Ralph Method community.
 
 This implementation builds on their work while adding cross-platform support, git-optional operation, and model-agnostic configuration.
 
@@ -526,4 +559,4 @@ This implementation builds on their work while adding cross-platform support, gi
 
 ## License
 
-This repository is a practical implementation of the Ralph Method. See original sources for licensing information. No claims or creativity is asserted by the current author. 
+This repository is a practical implementation of the Ralph Method. See original sources for licensing information. No claims or creativity is asserted by me or Aku!
