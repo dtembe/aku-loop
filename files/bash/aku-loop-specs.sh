@@ -1,6 +1,6 @@
 #!/bin/bash
 # Aku Loop v2 - Specs Interview Mode (File Based)
-# Usage: ./aku-loopy-specs.sh [options]
+# Usage: ./aku-loop-specs.sh [options]
 # 
 # Interactive specification builder. Acts as a Product Manager to interview you 
 # via the 'SPECS_INTERVIEW.md' file and generate specification files in specs/
@@ -190,7 +190,7 @@ while true; do
         if [[ "$COUNT" -gt 0 ]]; then
             echo ""
             echo -e "${GREEN}✅ Successfully generated $COUNT spec files in /$SPECS_DIR.${NC}"
-            echo -e "${GREEN}You can now run './aku-loopy-plan.sh' to verify and plan.${NC}"
+            echo -e "${GREEN}You can now run './aku-loop-plan.sh' to verify and plan.${NC}"
             
             echo -e "\n\n## System\nSpecs generated. Session Complete." >> "$INTERVIEW_FILE"
             break
@@ -200,3 +200,4 @@ while true; do
     # 6. Add Placeholder
     echo -e "\n\n## You\n" >> "$INTERVIEW_FILE"
 done
+

@@ -18,7 +18,7 @@ git clone https://github.com/dtembe/aku-loop.git
 
 ### 2. Initialize Your Project
 
-Copy the scripts to *your* project root (not inside the aku-loop folder):
+Copy the scripts to *your* project root (not inside the Aku Loop folder):
 
 **PowerShell (Windows)**
 ```powershell
@@ -42,25 +42,25 @@ Now run the 3-stage process directly from your project root:
 **PowerShell**
 ```powershell
 # 1. SPECS Mode: Interactive interview to generate specs
-.\aku-loopy-specs.ps1
+.\aku-loop-specs.ps1
 
 # 2. PLAN Mode: Analyze specs, create tasks
-.\aku-loopy-plan.ps1 -MaxIterations 1 # New project: 1 iteration is enough
+.\aku-loop-plan.ps1 -MaxIterations 1 # New project: 1 iteration is enough
 
 # 3. BUILD Mode: Execute plan, write code
-.\aku-loopy-build.ps1
+.\aku-loop-build.ps1
 ```
 
 **Bash**
 ```bash
 # 1. SPECS Mode
-./aku-loopy-specs.sh
+./aku-loop-specs.sh
 
 # 2. PLAN Mode
-./aku-loopy-plan.sh 1                 # New project: 1 iteration is enough
+./aku-loop-plan.sh 1                 # New project: 1 iteration is enough
 
 # 3. BUILD Mode
-./aku-loopy-build.sh
+./aku-loop-build.sh
 ```
 
 Common options for all scripts:
@@ -114,12 +114,12 @@ Instead of writing markdown files manually, use the interactive Product Manager 
 
 ```powershell
 # Windows
-.\aku-loopy-specs.ps1
+.\aku-loop-specs.ps1
 ```
 
 ```bash
 # Linux/macOS
-./aku-loopy-specs.sh
+./aku-loop-specs.sh
 ```
 
 **The Loop:**
@@ -131,7 +131,7 @@ Instead of writing markdown files manually, use the interactive Product Manager 
 #### Phase 2. Planning
 
 
-Run `aku-loopy-plan` to analyze specs and generate the implementation plan.
+Run `aku-loop-plan` to analyze specs and generate the implementation plan.
 
 - **Objective:** Generate/update `IMPLEMENTATION_PLAN.md`
 - **Activity:** Gap analysis (specs vs code)
@@ -151,7 +151,7 @@ Run `aku-loopy-plan` to analyze specs and generate the implementation plan.
 
 #### Phase 3. Building
 
-Run `aku-loopy-build` to execute the plan.
+Run `aku-loop-build` to execute the plan.
 
 - **Objective:** Implement features, fix bugs, update plan
 - **Activity:** Reads `IMPLEMENTATION_PLAN.md`, picks top task, implements, tests
@@ -286,9 +286,9 @@ Aku-Loop/
 ├── artifacts/               # Images and other static assets
 ├── files/                   # Main implementation (not ignored)
 │   ├── bash/                # Bash/Linux/macOS scripts and templates
-│   │   ├── aku-loopy-specs.sh
-│   │   ├── aku-loopy-plan.sh
-│   │   ├── aku-loopy-build.sh
+│   │   ├── aku-loop-specs.sh
+│   │   ├── aku-loop-plan.sh
+│   │   ├── aku-loop-build.sh
 │   │   ├── setup_git_repo.sh
 │   │   ├── PROMPT_specs_interview.md
 │   │   ├── PROMPT_build.md
@@ -298,9 +298,9 @@ Aku-Loop/
 │   │   ├── specs/           # Example specs (not tracked in template)
 │   │   └── src/             # Example src (not tracked in template)
 │   └── pwsh/                # PowerShell/Windows scripts and templates
-│       ├── aku-loopy-specs.ps1
-│       ├── aku-loopy-plan.ps1
-│       ├── aku-loopy-build.ps1
+│       ├── aku-loop-specs.ps1
+│       ├── aku-loop-plan.ps1
+│       ├── aku-loop-build.ps1
 │       ├── setup_git_repo.ps1
 │       ├── PROMPT_specs_interview.md
 │       ├── PROMPT_build.md
@@ -312,16 +312,16 @@ Aku-Loop/
 │       └── src/             # Example src (gitignored)
 ├── artifacts/               # Images and other static assets
 ├── _archive/                # Archived scripts (not tracked in git)
-│   ├── aku-loopy.sh
-│   ├── aku_loopy.ps1
+│   ├── Aku Loop.sh
+│   ├── aku_loop.ps1
 │   ├── loop.ps1
 │   ├── loop.sh
 │   ├── loop_v1.ps1
 │   └── loop_v1.sh
 ├── test-project/            # Example/test project (not tracked in git)
-│   ├── aku-loopy-build.ps1
-│   ├── aku-loopy-plan.ps1
-│   ├── aku-loopy-specs.ps1
+│   ├── aku-loop-build.ps1
+│   ├── aku-loop-plan.ps1
+│   ├── aku-loop-specs.ps1
 │   ├── AGENTS.md
 │   ├── IMPLEMENTATION_PLAN.md
 │   ├── logs/
@@ -357,7 +357,7 @@ This drives everything:
 - Prefer Markdown over JSON for better token efficiency
 
 
-###  Steering Aku-Loopy: Patterns + Backpressure
+###  Steering Aku Loop: Patterns + Backpressure
 
 Create the right signals & gates to steer successful output:
 
@@ -371,10 +371,10 @@ Create the right signals & gates to steer successful output:
 - `AGENTS.md` specifies actual commands (prompt says "run tests" generically)
 
 
-###  Let Aku-Loopy Ralph
+###  Let Aku Loop Ralph
 
 
-Aku-Loopy's effectiveness comes from trusting it to do the right thing (eventually):
+Aku Loop's effectiveness comes from trusting it to do the right thing (eventually):
 
 - Lean into LLM's ability to self-identify, self-correct and self-improve
 - Eventual consistency achieved through iteration
@@ -383,9 +383,9 @@ Aku-Loopy's effectiveness comes from trusting it to do the right thing (eventual
 
 ###  Move Outside the Loop
 
-To get the most out of Aku-Loopy, you need to get out of its way:
+To get the most out of Aku Loop, you need to get out of its way:
 
-- Aku-Loopy should do _all_ the work, including deciding what to implement next
+- Aku Loop should do _all_ the work, including deciding what to implement next
 - Your job: engineer the setup and environment for success
 - Observe and course correct—tune like a guitar
 - Add "signs" based on observed failures
@@ -427,32 +427,32 @@ done
 | **Exit Code Handling** | Stops loop on critical failures (exit code > 1) |
 | **Auto-Completion (Build)** | Detects when all tasks are done and exits gracefully |
 
-**Bash (`aku-loopy-plan.sh`, `aku-loopy-build.sh`, `aku-loopy-specs.sh`):**
+**Bash (`aku-loop-plan.sh`, `aku-loop-build.sh`, `aku-loop-specs.sh`):**
 ```bash
-./aku-loopy-specs.sh                  # Interactive specs interview
-./aku-loopy-build.sh                  # Build mode, unlimited
-./aku-loopy-build.sh 20               # Build mode, max 20 iterations
-./aku-loopy-plan.sh                   # Plan mode, unlimited
-./aku-loopy-plan.sh 5                 # Plan mode, max 5 iterations
-./aku-loopy-build.sh --model sonnet   # Use sonnet model instead of opus
-./aku-loopy-build.sh --cooldown 30    # 30s delay between iterations
-./aku-loopy-build.sh --resume         # Resume interrupted run
-./aku-loopy-build.sh --log-dir ./logs # Custom log directory
-./aku-loopy-build.sh --no-log         # Disable file logging
+./aku-loop-specs.sh                  # Interactive specs interview
+./aku-loop-build.sh                  # Build mode, unlimited
+./aku-loop-build.sh 20               # Build mode, max 20 iterations
+./aku-loop-plan.sh                   # Plan mode, unlimited
+./aku-loop-plan.sh 5                 # Plan mode, max 5 iterations
+./aku-loop-build.sh --model sonnet   # Use sonnet model instead of opus
+./aku-loop-build.sh --cooldown 30    # 30s delay between iterations
+./aku-loop-build.sh --resume         # Resume interrupted run
+./aku-loop-build.sh --log-dir ./logs # Custom log directory
+./aku-loop-build.sh --no-log         # Disable file logging
 ```
 
-**PowerShell (`aku-loopy-plan.ps1`, `aku-loopy-build.ps1`, `aku-loopy-specs.ps1`):**
+**PowerShell (`aku-loop-plan.ps1`, `aku-loop-build.ps1`, `aku-loop-specs.ps1`):**
 ```powershell
-.\aku-loopy-specs.ps1                 # Interactive specs interview
-.\aku-loopy-build.ps1                 # Build mode, unlimited
-.\aku-loopy-build.ps1 -MaxIterations 20
-.\aku-loopy-plan.ps1                  # Plan mode, unlimited
-.\aku-loopy-plan.ps1 -MaxIterations 5
-.\aku-loopy-build.ps1 -Model sonnet   # Use sonnet model
-.\aku-loopy-build.ps1 -Cooldown 30    # 30s delay between iterations
-.\aku-loopy-build.ps1 -Resume         # Resume interrupted run
-.\aku-loopy-build.ps1 -LogDir ./logs  # Custom log directory
-.\aku-loopy-build.ps1 -NoLog          # Disable file logging
+.\aku-loop-specs.ps1                 # Interactive specs interview
+.\aku-loop-build.ps1                 # Build mode, unlimited
+.\aku-loop-build.ps1 -MaxIterations 20
+.\aku-loop-plan.ps1                  # Plan mode, unlimited
+.\aku-loop-plan.ps1 -MaxIterations 5
+.\aku-loop-build.ps1 -Model sonnet   # Use sonnet model
+.\aku-loop-build.ps1 -Cooldown 30    # 30s delay between iterations
+.\aku-loop-build.ps1 -Resume         # Resume interrupted run
+.\aku-loop-build.ps1 -LogDir ./logs  # Custom log directory
+.\aku-loop-build.ps1 -NoLog          # Disable file logging
 ```
 
 
@@ -516,15 +516,15 @@ Succinct learnings about how to RUN the project:
 
 ### IMPLEMENTATION_PLAN.md
 
-- Generated by Aku-Loopy during PLANNING mode
+- Generated by Aku Loop during PLANNING mode
 - Updated during BUILDING mode (mark complete, add discoveries)
-- No predefined template—let Aku-Loopy/LLM dictate format
+- No predefined template—let Aku Loop/LLM dictate format
 - Acts as shared state between iterations
 - Can be regenerated anytime—disposable
 
 ### SPECS_INTERVIEW.md
 
-- Created automatically by `aku-loopy-specs` interactive mode.
+- Created automatically by `aku-loop-specs` interactive mode.
 - Serves as the shared buffer between You and the Product Manager Agent.
 - Contains the full conversation history of the requirements gathering session.
 
@@ -578,3 +578,5 @@ This implementation builds on their work while adding cross-platform support, gi
 ## License
 
 This repository is a practical implementation of the Ralph Method. See original sources for licensing information. No claims or creativity is asserted by me or Aku!
+
+

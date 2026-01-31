@@ -1,11 +1,11 @@
 # Aku Loop v2 - Build Mode
-# Usage: .\aku-loopy-build.ps1 [options]
+# Usage: .\aku-loop-build.ps1 [options]
 #
 # Examples:
-#   .\aku-loopy-build.ps1                        # Build mode, unlimited iterations
-#   .\aku-loopy-build.ps1 -MaxIterations 20      # Build mode, max 20 iterations
-#   .\aku-loopy-build.ps1 -Model sonnet          # Build mode with sonnet model
-#   .\aku-loopy-build.ps1 -Resume                # Resume from last saved iteration
+#   .\aku-loop-build.ps1                        # Build mode, unlimited iterations
+#   .\aku-loop-build.ps1 -MaxIterations 20      # Build mode, max 20 iterations
+#   .\aku-loop-build.ps1 -Model sonnet          # Build mode with sonnet model
+#   .\aku-loop-build.ps1 -Resume                # Resume from last saved iteration
 #
 # Options:
 #   -MaxIterations <n>   Maximum iterations (0 = unlimited)
@@ -448,3 +448,4 @@ Write-Host "Aku Loop (Build) finished." -ForegroundColor Green
 if ($LogEnabled) {
     Write-Host "Full log available at: $script:LogFile" -ForegroundColor Gray
 }
+

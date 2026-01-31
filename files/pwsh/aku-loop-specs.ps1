@@ -1,5 +1,5 @@
 # Aku Loop v2 - Specs Interview Mode (File Based)
-# Usage: .\aku-loopy-specs.ps1 [options]
+# Usage: .\aku-loop-specs.ps1 [options]
 # 
 # Interactive specification builder. Acts as a Product Manager to interview you 
 # via the 'SPECS_INTERVIEW.md' file and generate specification files in specs/
@@ -166,7 +166,7 @@ while ($true) {
         if ($count -gt 0) {
             Write-Host ""
             Write-Host "✅ Successfully generated $count spec files in /$SpecsDir." -ForegroundColor "Green"
-            Write-Host "You can now run '.\aku-loopy-plan.ps1' to verify and plan." -ForegroundColor "Green"
+            Write-Host "You can now run '.\aku-loop-plan.ps1' to verify and plan." -ForegroundColor "Green"
             
             # Append final note
             Add-Content -Path $InterviewFile -Value "`n`n## System`nSpecs generated. Session Complete." -Encoding UTF8
@@ -177,3 +177,4 @@ while ($true) {
     # 6. Add next user placeholder
     Add-Content -Path $InterviewFile -Value "`n`n## You`n" -Encoding UTF8
 }
+

@@ -1,11 +1,11 @@
 # Aku Loop v2 - Plan Mode
-# Usage: .\aku-loopy-plan.ps1 [options]
+# Usage: .\aku-loop-plan.ps1 [options]
 #
 # Examples:
-#   .\aku-loopy-plan.ps1                         # Plan mode, unlimited iterations
-#   .\aku-loopy-plan.ps1 -MaxIterations 5        # Plan mode, max 5 iterations
-#   .\aku-loopy-plan.ps1 -Model sonnet           # Plan mode with sonnet model
-#   .\aku-loopy-plan.ps1 -Resume                 # Resume from last saved iteration
+#   .\aku-loop-plan.ps1                         # Plan mode, unlimited iterations
+#   .\aku-loop-plan.ps1 -MaxIterations 5        # Plan mode, max 5 iterations
+#   .\aku-loop-plan.ps1 -Model sonnet           # Plan mode with sonnet model
+#   .\aku-loop-plan.ps1 -Resume                 # Resume from last saved iteration
 #
 # Options:
 #   -MaxIterations <n>   Maximum iterations (0 = unlimited)
@@ -340,3 +340,4 @@ Write-Host "Aku Loop (Plan) finished." -ForegroundColor Green
 if ($LogEnabled) {
     Write-Host "Full log available at: $script:LogFile" -ForegroundColor Gray
 }
+

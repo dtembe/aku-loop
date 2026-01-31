@@ -13,7 +13,7 @@ This repository implements **The Aku Loop** - a documentation-based development 
 
 ## Running The Aku Loop
 
-Both script names are equivalent: `loop.sh` = `aku_loopy.sh`, and `loop.ps1` = `aku_loopy.ps1`.
+Both script names are equivalent: `loop.sh` = `aku_loop.sh`, and `loop.ps1` = `aku_loop.ps1`.
 
 ### Bash/Linux/macOS
 
@@ -22,22 +22,22 @@ Both script names are equivalent: `loop.sh` = `aku_loopy.sh`, and `loop.ps1` = `
 cd files/bash
 
 # Make script executable (first time only)
-chmod +x loop.sh              # or: chmod +x aku_loopy.sh
+chmod +x loop.sh              # or: chmod +x aku_loop.sh
 
 # Build mode - unlimited iterations
-./loop.sh                      # or: ./aku_loopy.sh
+./loop.sh                      # or: ./aku_loop.sh
 
 # Build mode - max 20 iterations
-./loop.sh 20                   # or: ./aku_loopy.sh 20
+./loop.sh 20                   # or: ./aku_loop.sh 20
 
 # Plan mode - unlimited iterations
-./loop.sh plan                 # or: ./aku_loopy.sh plan
+./loop.sh plan                 # or: ./aku_loop.sh plan
 
 # Plan mode - max 5 iterations
-./loop.sh plan 5               # or: ./aku_loopy.sh plan 5
+./loop.sh plan 5               # or: ./aku_loop.sh plan 5
 
 # Enhanced features
-./loop.sh --model sonnet            # Override model (or use ./aku_loopy.sh)
+./loop.sh --model sonnet            # Override model (or use ./aku_loop.sh)
 ./loop.sh --cooldown 30             # 30s delay between iterations
 ./loop.sh --resume                  # Resume from last saved state
 ./loop.sh --log-dir ./my-logs       # Custom log directory
@@ -60,19 +60,19 @@ chmod +x loop.sh              # or: chmod +x aku_loopy.sh
 cd files\pwsh
 
 # Build mode - unlimited iterations
-.\loop.ps1                           # or: .\aku_loopy.ps1
+.\loop.ps1                           # or: .\aku_loop.ps1
 
 # Build mode - max 20 iterations
-.\loop.ps1 -MaxIterations 20         # or: .\aku_loopy.ps1 -MaxIterations 20
+.\loop.ps1 -MaxIterations 20         # or: .\aku_loop.ps1 -MaxIterations 20
 
 # Plan mode - unlimited iterations
-.\loop.ps1 -Plan                     # or: .\aku_loopy.ps1 -Plan
+.\loop.ps1 -Plan                     # or: .\aku_loop.ps1 -Plan
 
 # Plan mode - max 5 iterations
-.\loop.ps1 -Plan -MaxIterations 5    # or: .\aku_loopy.ps1 -Plan -MaxIterations 5
+.\loop.ps1 -Plan -MaxIterations 5    # or: .\aku_loop.ps1 -Plan -MaxIterations 5
 
 # Enhanced features
-.\loop.ps1 -Model sonnet                # Override model (or use .\aku_loopy.ps1)
+.\loop.ps1 -Model sonnet                # Override model (or use .\aku_loop.ps1)
 .\loop.ps1 -Cooldown 30                 # 30s delay between iterations
 .\loop.ps1 -Resume                      # Resume from last state
 .\loop.ps1 -LogDir ./my-logs            # Custom log directory
@@ -94,7 +94,7 @@ The `--dangerously-skip-permissions` flag bypasses Claude's permission system en
 
 ### Git-Optional Operation
 
-Both `loop.sh`/`aku_loopy.sh` and `loop.ps1`/`aku_loopy.ps1` automatically detect if running inside a git repository:
+Both `loop.sh`/`aku_loop.sh` and `loop.ps1`/`aku_loop.ps1` automatically detect if running inside a git repository:
 - **In git repo**: Normal behavior with commits and pushes after each iteration
 - **No git repo**: Skips git operations, loop continues without version control
 
@@ -111,12 +111,12 @@ Phase 1: Define Requirements
     specs/*.md created (one per topic of concern)
 
 Phase 2: PLANNING Mode
-    Aku-Loopy studies specs/* and src/*
+    Aku Loop studies specs/* and src/*
     ↓
     IMPLEMENTATION_PLAN.md created (prioritized task list)
 
 Phase 3: BUILDING Mode
-    Aku-Loopy picks tasks from plan
+    Aku Loop picks tasks from plan
     ↓
     Implement → Test → Commit → Push → Loop
 ```
@@ -156,7 +156,7 @@ Aku-Loop/
 ├── files/
 │   ├── bash/                        # Bash/Linux/macOS loop implementation
 │   │   ├── loop.sh                  # Aku Loop orchestration script
-│   │   ├── aku_loopy.sh             # Same as loop.sh
+│   │   ├── aku_loop.sh             # Same as loop.sh
 │   │   ├── setup_git_repo.sh        # Helper: Create git repo + GitHub remote
 │   │   ├── PROMPT_build.md          # BUILDING mode instructions
 │   │   ├── PROMPT_plan.md           # PLANNING mode instructions
@@ -164,7 +164,7 @@ Aku-Loop/
 │   │   └── IMPLEMENTATION_PLAN.md   # Prioritized task list (generated)
 │   └── pwsh/                        # PowerShell/Windows loop implementation
 │       ├── loop.ps1                 # Aku Loop orchestration script
-│       ├── aku_loopy.ps1            # Same as loop.ps1
+│       ├── aku_loop.ps1            # Same as loop.ps1
 │       ├── setup_git_repo.ps1       # Helper: Create git repo + GitHub remote
 │       ├── PROMPT_build.md          # BUILDING mode instructions
 │       ├── PROMPT_plan.md           # PLANNING mode instructions
@@ -201,7 +201,7 @@ A "topic of concern" should be describable in one sentence without "and":
 - Prefer Markdown over JSON for better token efficiency
 - Single task per loop = 100% smart zone context utilization
 
-### Steering Aku-Loopy: Upstream and Downstream
+### Steering Aku Loop: Upstream and Downstream
 
 **Upstream** (deterministic setup):
 - Every loop loads the same files: `PROMPT.md` + `AGENTS.md`
@@ -213,10 +213,10 @@ A "topic of concern" should be describable in one sentence without "and":
 - `AGENTS.md` provides project-specific validation commands
 - Prompt says "run tests" generically; `AGENTS.md` specifies actual commands
 
-### Let Aku-Loopy Ralph
+### Let Aku Loop Ralph
 
 - The plan is disposable - regenerate when wrong/stale
-- Aku-Loopy achieves eventual consistency through iteration
+- Aku Loop achieves eventual consistency through iteration
 - Observe and course correct - tune like a guitar
 - Add "signs" (prompts, code patterns, AGENTS.md entries) based on observed failures
 
@@ -256,9 +256,9 @@ Concise operational guide (~60 lines max):
 
 ### IMPLEMENTATION_PLAN.md
 
-- Generated by Aku-Loopy during PLANNING mode
+- Generated by Aku Loop during PLANNING mode
 - Updated during BUILDING mode (mark complete, add discoveries)
-- No predefined template - let Aku-Loopy/LLM dictate format
+- No predefined template - let Aku Loop/LLM dictate format
 - Acts as shared state between otherwise isolated loop executions
 - Can be regenerated anytime - disposable
 
@@ -267,7 +267,7 @@ Concise operational guide (~60 lines max):
 - Created during Phase 1 (Requirements Definition)
 - One markdown file per topic of concern
 - Source of truth for what should be built
-- No predefined template - let Aku-Loopy/LLM dictate format
+- No predefined template - let Aku Loop/LLM dictate format
 
 ## Development Patterns
 
@@ -292,13 +292,13 @@ Each iteration creates one commit (if in git repo):
 ### When the Plan Goes Wrong
 
 Regenerate the plan if:
-- Aku-Loopy is going off track (implementing wrong things, duplicating work)
+- Aku Loop is going off track (implementing wrong things, duplicating work)
 - Plan feels stale or doesn't match current state
 - Too much clutter from completed items
 - Significant spec changes made
 - Confusion about what's actually done
 
-Regeneration cost: one Planning loop. Cheap compared to Aku-Loopy going in circles.
+Regeneration cost: one Planning loop. Cheap compared to Aku Loop going in circles.
 
 ## Extension Concepts
 
@@ -307,7 +307,9 @@ The README documents several optional enhancements:
 - **AskUserQuestion for Planning**: Use Claude's interview tool to clarify requirements during Phase 1
 - **Acceptance-Driven Backpressure**: Derive test requirements from acceptance criteria during planning
 - **Non-Deterministic Backpressure**: LLM-as-judge tests for subjective criteria (tone, aesthetics)
-- **Aku-Loopy-Friendly Work Branches**: Scoped planning per branch for parallel work streams
+- **aku-loop-Friendly Work Branches**: Scoped planning per branch for parallel work streams
 - **JTD → Story Map → SLC Release**: Product-focused planning with Simple/Lovable/Complete releases
 
-These are documented for reference but not required for core Aku-Loopy functionality.
+These are documented for reference but not required for core Aku Loop functionality.
+
+

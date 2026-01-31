@@ -1,12 +1,12 @@
 #!/bin/bash
 # Aku Loop v3 - Plan Mode
-# Usage: ./aku-loopy-plan.sh [options]
+# Usage: ./aku-loop-plan.sh [options]
 # 
 # Examples:
-#   ./aku-loopy-plan.sh                          # Plan mode, unlimited iterations
-#   ./aku-loopy-plan.sh 5                        # Plan mode, max 5 iterations
-#   ./aku-loopy-plan.sh --model sonnet           # Plan mode with sonnet model
-#   ./aku-loopy-plan.sh --resume                 # Resume from last saved iteration
+#   ./aku-loop-plan.sh                          # Plan mode, unlimited iterations
+#   ./aku-loop-plan.sh 5                        # Plan mode, max 5 iterations
+#   ./aku-loop-plan.sh --model sonnet           # Plan mode with sonnet model
+#   ./aku-loop-plan.sh --resume                 # Resume from last saved iteration
 #
 # Options:
 #   --model <model>      Override default model (opus/sonnet/etc)
@@ -328,3 +328,4 @@ fi
 echo ""
 echo "Aku Loop (Plan) finished."
 [ "$LOG_ENABLED" = true ] && echo "Full log available at: $LOG_FILE"
+

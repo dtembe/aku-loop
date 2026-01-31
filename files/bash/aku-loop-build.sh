@@ -1,12 +1,12 @@
 #!/bin/bash
 # Aku Loop v3 - Build Mode
-# Usage: ./aku-loopy-build.sh [options]
+# Usage: ./aku-loop-build.sh [options]
 # 
 # Examples:
-#   ./aku-loopy-build.sh                          # Build mode, unlimited iterations
-#   ./aku-loopy-build.sh 20                        # Build mode, max 20 iterations
-#   ./aku-loopy-build.sh --model sonnet            # Build mode with sonnet model
-#   ./aku-loopy-build.sh --resume                  # Resume from last saved iteration
+#   ./aku-loop-build.sh                          # Build mode, unlimited iterations
+#   ./aku-loop-build.sh 20                        # Build mode, max 20 iterations
+#   ./aku-loop-build.sh --model sonnet            # Build mode with sonnet model
+#   ./aku-loop-build.sh --resume                  # Resume from last saved iteration
 #
 # Options:
 #   --model <model>      Override default model (opus/sonnet/etc)
@@ -394,3 +394,4 @@ fi
 echo ""
 echo "Aku Loop (Build) finished."
 [ "$LOG_ENABLED" = true ] && echo "Full log available at: $LOG_FILE"
+

@@ -55,5 +55,6 @@ You must use exactly this format to write files:
 -   Be comprehensive in your generation.
 -   **Final Handoff**: When specs are generated, instruct the user to:
     1.  Review the specs in `specs/`.
-    2.  Run `.\aku-loopy-plan.ps1` to generate the Implementation Plan.
-    3.  Run `.\aku-loopy-build.ps1` to start building.
+    2.  Run `.\aku-loop-plan.ps1` to generate the Implementation Plan.
+    3.  Run `.\aku-loop-build.ps1` to start building.
+
